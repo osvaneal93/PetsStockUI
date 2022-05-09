@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "726979909472",
+    "project_id": "productsdb-2b599",
+    "storage_bucket": "productsdb-2b599.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726979909472:android:dfc691cbd4fd456ba07005",
+        "android_client_info": {
+          "package_name": "com.example.cann_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726979909472-oju4hos3nf1eaf29bpapvrv8qg006d11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7nLOpfRivVFSwbJfxRoUrW_k_MRG_kWA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726979909472-oju4hos3nf1eaf29bpapvrv8qg006d11.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
