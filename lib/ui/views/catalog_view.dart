@@ -16,9 +16,7 @@ class _CatalogViewState extends State<CatalogView> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      
-    });
+    setState(() {});
     return Scaffold(
       body: FutureBuilder(
         future: provider.getProduct(),
@@ -47,16 +45,22 @@ class _CatalogViewState extends State<CatalogView> {
 
   _listBuilder(context, ProductModel productModel) {
     return Dismissible(
-      onDismissed: (direction) => provider.deleteProduct(productModel.id!),
-      key: UniqueKey(),
-      child: ListTile(
-        title: Text(productModel.name!),
-        subtitle: Text(productModel.id!),
-        onTap: () {
-          Navigator.pushNamed(context, 'productSettings/',
-              arguments: productModel);
-        },
-      ),
-    );
+        onDismissed: (direction) => provider.deleteProduct(productModel.id!),
+        key: UniqueKey(),
+        child: Card(
+          child: Column(children: [
+            ListTile(
+              title: Text(productModel.name!),
+              subtitle: Text(productModel.id!),
+              onTap: () {
+                Navigator.pushNamed(context, 'productSettings/',
+                    arguments: productModel);
+              },
+            ),
+            (productModel.fotoUrl == null)
+                ? Image.asset('assets/noImage.png')
+                : Image.network(productModel.fotoUrl!),
+          ]),
+        ));
   }
 }

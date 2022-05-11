@@ -36,3 +36,21 @@ libreria image picker
 sdk android
 creamos metodos para appbar
 p selecc foto creamos estancia d imagepicker, imagesource, validamos que no sean null la imag, redibujamos con setstate, creamos metodo para mostrar foto con condicion si foto.url es null,  regresamos imagen con condicion foto?.path?? 'assetsImage'.
+
+convertir el metodo para que sea cargar imagen y tomar foto.
+
+Configurar cloudinary y probar en postman
+crear metodo en provider, recibe file, devuelve f string,
+
+creamos el uri,
+creamos mimetype usando el mimetype = mime (image.path)usar .split /
+el request sera multipartrequ, post, url.
+creamos el file con await multipartfil.frompat(file, path, mediatype ) 
+
+ en el metodo submit vamos a guardar en una nueva estancia el enlace de donde se guardo la foto, si foto es distinto de null al modelo.fotourl le ponemos el string que devuelve el metodo de subir imagen.
+
+ Creamos el disenio que vamos a mostrar en el list
+ podemos utilizar ternario si producto.fotourl es null mostramos not image, sino pues ya cargamos el networkImage.
+En el mostrarFoto de el archivo pra cargar el producto en el todo if regresamos un fadeimage con el network de la imagen
+
+En el procesar foto, usmos el if foto es != null entonces lo hacemos == a null para que se pueda llevar a cabo la carga de la nueva imagen 

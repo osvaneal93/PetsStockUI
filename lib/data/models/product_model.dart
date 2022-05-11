@@ -38,4 +38,5 @@ class ProductModel {
         "disponible": disponible,
         "fotoUrl": fotoUrl,
     };
+    
 }

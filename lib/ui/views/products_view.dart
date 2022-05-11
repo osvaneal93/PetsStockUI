@@ -5,6 +5,9 @@ import 'package:cann_app/data/models/product_model.dart';
 import 'package:cann_app/ui/providers/products_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import 'package:firebase_core/firebase_core.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({Key? key}) : super(key: key);
@@ -29,68 +32,117 @@ class _ProductsViewState extends State<ProductsView> {
       appBar: AppBar(
         title: const Text('PetsApp'),
         centerTitle: true,
-        leading:
-            IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back)),
         actions: [
           GestureDetector(
             child: IconButton(
               onPressed: () {
-                _addImage();
+                _addImage(productParameter);
               },
               icon: const Icon(Icons.image),
             ),
           ),
           GestureDetector(
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                _takePhoto();
+              },
               icon: const Icon(Icons.camera),
             ),
           ),
         ],
       ),
-      body: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _showImage(sizeScreen),
-            const SizedBox(
-              height: 10,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: sizeScreen.height * .09,
+                ),
+                _showImage(sizeScreen, productParameter),
+                SizedBox(
+                  height: sizeScreen.height * .04,
+                ),
+                const Text('Product Name:'),
+                _addProduct(context, productParameter),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text('Price:'),
+                _addPrice(context, productParameter),
+                _switchStock(),
+                _buttonSave(productParameter),
+              ],
             ),
-            const Text('Product Name:'),
-            _addProduct(context, productParameter),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text('Price:'),
-            _addPrice(context, productParameter),
-            _switchStock(),
-            _buttonSave(productParameter),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  _addImage() async {
+  _takePhoto() async {
     imageP = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
+      source: ImageSource.camera,
       maxWidth: 1800,
       maxHeight: 1800,
     );
     setState(() {});
   }
 
-  _showImage(Size size) {
-    if (productModel.fotoUrl != null) {
-      //TODO
+  _addImage(ProductModel productPro) async {
+    imageP = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+
+    if (imageP != null){
+      productPro.fotoUrl = null;
+    }
+    setState(() {});
+  }
+
+  _showImage(Size size, ProductModel productPro) {
+    if (productPro.fotoUrl != null) {
+      return Image.network(productPro.fotoUrl!);
     } else {
       return ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: imageP != null
-            ? Image.file(File(imageP!.path), height: size.height * .4,)
-            : Image.asset('assets/noImage.png'),
+            ? Image.file(
+                File(imageP!.path),
+                height: size.height * .4,
+                width: size.width * .9,
+                fit: BoxFit.cover,
+              )
+            : Image.asset(
+                'assets/noImage.png',
+                height: size.height * .4,
+                fit: BoxFit.cover,
+              ),
       );
+    }
+  }
+
+  Future uploadFile() async {
+    if (imageP == null) return;
+    await Firebase.initializeApp();
+    final fileName = imageP!.path;
+    final destination = 'files/$fileName';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('file/');
+      await ref.putFile(imageP! as File);
+    } catch (e) {
+      print('error occured');
     }
   }
 
@@ -186,10 +238,11 @@ class _ProductsViewState extends State<ProductsView> {
         });
       },
       title: const Text('En stock'),
+      contentPadding: EdgeInsets.symmetric(horizontal: 150),
     );
   }
 
-  _buttonSave(productParameter) {
+  _buttonSave(ProductModel productParameter) {
     final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
       minimumSize: const Size(88, 36),
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -203,33 +256,40 @@ class _ProductsViewState extends State<ProductsView> {
       style: raisedButtonStyle,
       onPressed: (saving)
           ? null
-          : () {
+          : () async {
               _submit(productParameter);
+              
+    final String? imageUrl = await productProvider.uploadImage(imageP!);
+    if (imageUrl != null) {
+      productParameter.fotoUrl = imageUrl;
+    }
             },
     );
   }
 
-  void _submit(productParameter) {
+  void _submit(ProductModel productParameter) async {
     if (!formKey.currentState!.validate()) return;
     putSnackbar();
     formKey.currentState!.save();
 
-    print('todo ok');
-    print(productModel.name);
-    print(productModel.value);
-
     setState(() {
       saving = true;
     });
+   
+    if (imageP != null) {
+     productModel.fotoUrl = await productProvider.uploadImage(imageP!);
+    }
     if (productParameter.id == null) {
       productProvider.addProduct(productModel);
     } else {
-      productProvider.updateProduct(productModel, productParameter.id);
+      productProvider.updateProduct(productModel, productParameter.id!);
     }
 
     setState(() {
-      saving = true;
+      saving = false;
     });
+
+    Navigator.pop(context);
   }
 
   putSnackbar() {
