@@ -57,29 +57,27 @@ class _ProductsViewState extends State<ProductsView> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: sizeScreen.height * .09,
-                ),
-                _showImage(sizeScreen, productParameter),
-                SizedBox(
-                  height: sizeScreen.height * .04,
-                ),
-                const Text('Product Name:'),
-                _addProduct(context, productParameter),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text('Price:'),
-                _addPrice(context, productParameter),
-                _switchStock(),
-                _buttonSave(productParameter),
-              ],
-            ),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              SizedBox(
+                height: sizeScreen.height * .09,
+              ),
+              _showImage(sizeScreen, productParameter),
+              SizedBox(
+                height: sizeScreen.height * .04,
+              ),
+              const Text('Product Name:'),
+              _addProduct(context, productParameter),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text('Price:'),
+              _addPrice(context, productParameter),
+              _switchStock(),
+              _buttonSave(productParameter),
+            ],
           ),
         ),
       ),
@@ -102,7 +100,7 @@ class _ProductsViewState extends State<ProductsView> {
       maxHeight: 1800,
     );
 
-    if (imageP != null){
+    if (imageP != null) {
       productPro.fotoUrl = null;
     }
     setState(() {});
@@ -230,15 +228,16 @@ class _ProductsViewState extends State<ProductsView> {
   }
 
   _switchStock() {
-    return SwitchListTile(
-      value: productModel.disponible!,
-      onChanged: (value) {
-        setState(() {
-          productModel.disponible = value;
-        });
-      },
-      title: const Text('En stock'),
-      contentPadding: EdgeInsets.symmetric(horizontal: 150),
+    return Center(
+      child: SwitchListTile(
+        value: productModel.disponible!,
+        title: Text('En Stock'),
+        onChanged: (value) {
+          setState(() {
+            productModel.disponible = value;
+          });
+        },
+      ),
     );
   }
 
@@ -258,11 +257,12 @@ class _ProductsViewState extends State<ProductsView> {
           ? null
           : () async {
               _submit(productParameter);
-              
-    final String? imageUrl = await productProvider.uploadImage(imageP!);
-    if (imageUrl != null) {
-      productParameter.fotoUrl = imageUrl;
-    }
+
+              final String? imageUrl =
+                  await productProvider.uploadImage(imageP!);
+              if (imageUrl != null) {
+                productParameter.fotoUrl = imageUrl;
+              }
             },
     );
   }
@@ -275,9 +275,9 @@ class _ProductsViewState extends State<ProductsView> {
     setState(() {
       saving = true;
     });
-   
+
     if (imageP != null) {
-     productModel.fotoUrl = await productProvider.uploadImage(imageP!);
+      productModel.fotoUrl = await productProvider.uploadImage(imageP!);
     }
     if (productParameter.id == null) {
       productProvider.addProduct(productModel);
