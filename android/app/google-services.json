@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "726979909472",
-    "project_id": "productsdb-2b599",
-    "storage_bucket": "productsdb-2b599.appspot.com"
+    "project_number": "229469295150",
+    "project_id": "gallery-database-b10f8",
+    "storage_bucket": "gallery-database-b10f8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:726979909472:android:dfc691cbd4fd456ba07005",
+        "mobilesdk_app_id": "1:229469295150:android:13dd747bf7547e3f4bc5bf",
         "android_client_info": {
           "package_name": "com.example.cann_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "726979909472-oju4hos3nf1eaf29bpapvrv8qg006d11.apps.googleusercontent.com",
+          "client_id": "229469295150-rvhjo1pvk7pjldpvdq7fdk3elh76u5jf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cann_app",
+            "certificate_hash": "0beb3a6f1e057451139f83cb22925dd537e04eba"
+          }
+        },
+        {
+          "client_id": "229469295150-u63opofe1vcgnjhp5eu701ipf1up2dj6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC7nLOpfRivVFSwbJfxRoUrW_k_MRG_kWA"
+          "current_key": "AIzaSyDrGzjaPOtbCV83bKF2eGf5j5gUyrJQZ2A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "726979909472-oju4hos3nf1eaf29bpapvrv8qg006d11.apps.googleusercontent.com",
+              "client_id": "229469295150-u63opofe1vcgnjhp5eu701ipf1up2dj6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

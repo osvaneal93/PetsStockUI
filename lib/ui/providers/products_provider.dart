@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:cann_app/data/models/product_model.dart';
@@ -7,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class ProductsProvider {
-  final url = 'https://productsdb-2b599-default-rtdb.firebaseio.com';
+  final url = 'https://gallery-database-b10f8-default-rtdb.firebaseio.com/';
 
   Future<bool> addProduct(ProductModel productModel) async {
     final uri = Uri.parse('$url/product.json');
@@ -67,13 +66,13 @@ class ProductsProvider {
       ),
     );
     uploadRequest.files.add(file);
-    
+
     final streamResponse = await uploadRequest.send();
     final resp = await http.Response.fromStream(streamResponse);
 
-    if (resp.statusCode != 200 && resp.statusCode != 201){
-      print ('algo salio maaaaaaaaaaal');
-      print (resp.body);
+    if (resp.statusCode != 200 && resp.statusCode != 201) {
+      print('algo salio maaaaaaaaaaal');
+      print(resp.body);
     }
     final respData = json.decode(resp.body);
     print(respData['secure_url']);
